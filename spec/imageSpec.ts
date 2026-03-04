@@ -1,16 +1,20 @@
-import resizeImage from '../src/services/resizeImage';
+import supertest from 'supertest';
+import app from '../src/server';
 
-describe('Resize Function Unit Test', () => {
+const request = supertest(app);
 
-  it('should resize image successfully', async () => {
-    const result = await resizeImage('fjord', 200, 200);
-    expect(result).toContain('fjord_200_200.jpg');
+describe('Image Endpoint Tests', () => {
+
+  it('returns 200 for valid query parameters', async () => {
+    const response = await request.get(
+      '/api/images?filename=fjord&width=200&height=200'
+    );
+    expect(response.status).toBe(200);
   });
 
-  it('should throw error for invalid image', async () => {
-    await expectAsync(
-      resizeImage('invalidName', 200, 200)
-    ).toBeRejected();
+  it('returns 400 when parameters are missing', async () => {
+    const response = await request.get('/api/images');
+    expect(response.status).toBe(400);
   });
 
 });

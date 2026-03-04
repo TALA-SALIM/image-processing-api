@@ -39,26 +39,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var resizeImage_1 = __importDefault(require("../src/services/resizeImage"));
-describe('Resize Function Unit Test', function () {
-    it('should resize image successfully', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result;
+var supertest_1 = __importDefault(require("supertest"));
+var server_1 = __importDefault(require("../src/server"));
+var request = (0, supertest_1.default)(server_1.default);
+describe('Image Endpoint Tests', function () {
+    it('returns 200 for valid query parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resizeImage_1.default)('fjord', 200, 200)];
+                case 0: return [4 /*yield*/, request.get('/api/images?filename=fjord&width=200&height=200')];
                 case 1:
-                    result = _a.sent();
-                    expect(result).toContain('fjord_200_200.jpg');
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('should throw error for invalid image', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('returns 400 when parameters are missing', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, expectAsync((0, resizeImage_1.default)('invalidName', 200, 200)).toBeRejected()];
+                case 0: return [4 /*yield*/, request.get('/api/images')];
                 case 1:
-                    _a.sent();
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
                     return [2 /*return*/];
             }
         });

@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "npx eslint \"src/**/*.ts\"",
     "prettier": "prettier --config .prettier . --write",
-  "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "test": "npm run build && npm run jasmine"
   },
   "keywords": [],
