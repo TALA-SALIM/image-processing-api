@@ -3,29 +3,22 @@ import fs from 'fs';
 import path from 'path';
 
 const resizeImage = async (
-  filename: string,
+  inputPath: string,
+  outputPath: string,
   width: number,
   height: number,
-): Promise<string> => {
-  const fullPath = path.join(
-    process.cwd(),
-    'assets',
-    'fullimage',
-    `${filename}.jpg`,
-  );
+): Promise<void> => {
+  const dir = path.dirname(outputPath);
 
-  const thumbPath = path.join(
-    process.cwd(),
-    'assets',
-    'thumb',
-    `${filename}_${width}_${height}.jpg`,
-  );
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 
-  if (!fs.existsSync(fullPath)) {  throw new Error('Image not found'); }
+  if (fs.existsSync(outputPath)) {
+    return;
+  }
 
-  if (!fs.existsSync(thumbPath)) { await sharp(fullPath).resize(width, height).toFile(thumbPath);}
-
-  return thumbPath;
+  await sharp(inputPath).resize(width, height).toFile(outputPath);
 };
 
 export default resizeImage;

@@ -39,29 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var sharp_1 = __importDefault(require("sharp"));
+var resizeImage_1 = __importDefault(require("../src/services/resizeImage"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-var resizeImage = function (inputPath, outputPath, width, height) { return __awaiter(void 0, void 0, void 0, function () {
-    var dir;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                dir = path_1.default.dirname(outputPath);
-                if (!fs_1.default.existsSync(dir)) {
-                    fs_1.default.mkdirSync(dir, { recursive: true });
-                }
-                if (fs_1.default.existsSync(outputPath)) {
+describe("Image Processing Function", function () {
+    it("resizes image with valid input", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var output;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    output = path_1.default.resolve("assets/thumb/fjord_200_200.jpg");
+                    return [4 /*yield*/, (0, resizeImage_1.default)("assets/images/fjord.jpg", output, 200, 200)];
+                case 1:
+                    _a.sent();
+                    expect(fs_1.default.existsSync(output)).toBeTrue();
                     return [2 /*return*/];
-                }
-                return [4 /*yield*/, (0, sharp_1.default)(inputPath)
-                        .resize(width, height)
-                        .toFile(outputPath)];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.default = resizeImage;
-//# sourceMappingURL=resizeImage.js.map
+            }
+        });
+    }); });
+    it("throws error with invalid image name", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var output;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    output = path_1.default.resolve("assets/thumb/test.jpg");
+                    return [4 /*yield*/, expectAsync((0, resizeImage_1.default)("assets/images/__nope__.jpg", output, 200, 200)).toBeRejected()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+//# sourceMappingURL=resizeImageSpec.js.map

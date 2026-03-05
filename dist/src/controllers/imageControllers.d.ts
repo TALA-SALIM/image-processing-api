@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
-declare const resize: (req: Request, res: Response) => Promise<void>;
-export default resize;
+import { Request, Response } from "express";
+declare const imageController: (req: Request, res: Response) => Promise<void>;
+export default imageController;
 //# sourceMappingURL=imageControllers.d.ts.map
